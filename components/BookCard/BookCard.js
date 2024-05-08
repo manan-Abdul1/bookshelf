@@ -9,7 +9,7 @@ const CardContainer = tw.div`
   shadow-md
   rounded-lg
   overflow-hidden
-  mt-20
+  mt-10
 `;
 
 const DropdownIcon = tw.div`
