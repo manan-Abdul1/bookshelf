@@ -1,9 +1,7 @@
-// components/SignUp.js
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import tw from 'tailwind-styled-components';
 
-// Define styled components
 const Container = tw.div`
   max-w-md
   mx-auto
@@ -39,6 +37,13 @@ const Input = tw.input`
   focus:border-blue-500
 `;
 
+const Label = tw.label`
+  block 
+  text-gray-700 
+  font-bold 
+  mb-2
+`;
+
 const ErrorMessage = tw.span`
   text-red-500
 `;
@@ -60,7 +65,7 @@ const SignUp = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data); // Handle form submission logic (e.g., API call)
+    console.log(data);
   };
 
   return (
@@ -68,7 +73,7 @@ const SignUp = () => {
       <Title>Sign Up</Title>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="firstName">First Name</label>
+          <Label htmlFor="firstName">First Name</Label>
           <Input
             type="text"
             name="firstName"
@@ -78,7 +83,7 @@ const SignUp = () => {
           {errors.firstName && <ErrorMessage>First Name is required</ErrorMessage>}
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="lastName">Last Name</label>
+          <Label htmlFor="lastName">Last Name</Label>
           <Input
             type="text"
             name="lastName"
@@ -88,7 +93,7 @@ const SignUp = () => {
           {errors.lastName && <ErrorMessage>Last Name is required</ErrorMessage>}
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="email">Email</label>
+          <Label htmlFor="email">Email</Label>
           <Input
             type="email"
             name="email"
@@ -98,7 +103,7 @@ const SignUp = () => {
           {errors.email && <ErrorMessage>Email is required</ErrorMessage>}
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="password">Password</label>
+          <Label htmlFor="password">Password</Label>
           <Input
             type="password"
             name="password"

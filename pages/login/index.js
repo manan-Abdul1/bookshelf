@@ -1,4 +1,3 @@
-// components/SignIn.js
 import React from "react";
 import { useForm } from "react-hook-form";
 import tw from "tailwind-styled-components";
@@ -61,7 +60,7 @@ const SignIn = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data); // Handle form submission logic (e.g., API call)
+    console.log(data); 
   };
 
   return (
