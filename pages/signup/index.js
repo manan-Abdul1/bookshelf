@@ -1,6 +1,60 @@
 // components/SignUp.js
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import tw from 'tailwind-styled-components';
+
+// Define styled components
+const Container = tw.div`
+  max-w-md
+  mx-auto
+  my-8 
+  p-4
+  bg-white
+  shadow-md
+  rounded-md
+`;
+
+const Title = tw.h2`
+  text-2xl 
+  text-blue-500
+  text-center
+  font-bold
+  mb-4
+`;
+
+const Form = tw.form`
+  px-8 
+  pt-6 
+  pb-8 
+  mb-4
+`;
+
+const Input = tw.input`
+  w-full 
+  px-3 
+  py-2 
+  rounded-md 
+  border 
+  focus:outline-none 
+  focus:border-blue-500
+`;
+
+const ErrorMessage = tw.span`
+  text-red-500
+`;
+
+const Button = tw.button`
+  w-full 
+  bg-blue-500 
+  hover:bg-blue-600 
+  text-white 
+  font-bold 
+  py-2 
+  px-4 
+  rounded-md 
+  focus:outline-none 
+  focus:shadow-outline
+`;
 
 const SignUp = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -10,57 +64,52 @@ const SignUp = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto my-8 p-4 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl text-blue-500 text-center font-bold mb-4">Sign Up</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <Container>
+      <Title>Sign Up</Title>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="firstName">First Name</label>
-          <input
-            className={`w-full px-3 py-2 rounded-md border focus:outline-none focus:border-blue-500 ${errors.firstName ? 'border-red-500' : 'border-gray-300'}`}
+          <Input
             type="text"
             name="firstName"
             {...register('firstName', { required: true })}
+            placeholder="Enter your first name"
           />
-          {errors.firstName && <span className="text-red-500">First Name is required</span>}
+          {errors.firstName && <ErrorMessage>First Name is required</ErrorMessage>}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="lastName">Last Name</label>
-          <input
-            className={`w-full px-3 py-2 rounded-md border focus:outline-none focus:border-blue-500 ${errors.lastName ? 'border-red-500' : 'border-gray-300'}`}
+          <Input
             type="text"
             name="lastName"
             {...register('lastName', { required: true })}
+            placeholder="Enter your last name"
           />
-          {errors.lastName && <span className="text-red-500">Last Name is required</span>}
+          {errors.lastName && <ErrorMessage>Last Name is required</ErrorMessage>}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="email">Email</label>
-          <input
-            className={`w-full px-3 py-2 rounded-md border focus:outline-none focus:border-blue-500 ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+          <Input
             type="email"
             name="email"
             {...register('email', { required: true })}
+            placeholder="Enter your email"
           />
-          {errors.email && <span className="text-red-500">Email is required</span>}
+          {errors.email && <ErrorMessage>Email is required</ErrorMessage>}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="password">Password</label>
-          <input
-            className={`w-full px-3 py-2 rounded-md border focus:outline-none focus:border-blue-500 ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+          <Input
             type="password"
             name="password"
             {...register('password', { required: true })}
+            placeholder="Enter your password"
           />
-          {errors.password && <span className="text-red-500">Password is required</span>}
+          {errors.password && <ErrorMessage>Password is required</ErrorMessage>}
         </div>
-        <button
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline"
-          type="submit"
-        >
-          Sign Up
-        </button>
-      </form>
-    </div>
+        <Button type="submit">Sign Up</Button>
+      </Form>
+    </Container>
   );
 };
 
