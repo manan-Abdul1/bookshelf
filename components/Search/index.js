@@ -6,6 +6,7 @@ import tw from "tailwind-styled-components";
 const SearchSection = tw.section`
   w-full
   my-2
+  mt-20
 `;
 
 const Container = tw.div`
@@ -44,17 +45,16 @@ const ActiveIcon = tw(RiCloseCircleLine)`
   cursor-pointer
 `;
 
-const Search = () => {
-  const [searchText, setSearchText] = useState("");
+const Search = ({searchText, onSearch}) => {
   const [activeIcon, setActiveIcon] = useState(false);
 
   const handleSearchText = (value) => {
-    setSearchText(value);
+    onSearch(value);
     setActiveIcon(value.length > 0);
   };
 
   const clearSearchText = () => {
-    setSearchText("");
+    onSearch("");
     setActiveIcon(false);
   };
 

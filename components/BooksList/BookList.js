@@ -68,23 +68,32 @@ const mockBooks = [
   ];
   
 
-const BookList = () => {
-  return (
-    <div className="flex flex-wrap justify-center max-w-[80%]" style={{margin: '0 auto'}}>
-      {mockBooks.map((mockBook, index) =>
-        <BookCard
-          key={index}
-          title={mockBook.title}
-          author={mockBook.author}
-          publicationHouse={mockBook.publicationHouse}
-          publicationDate={mockBook.publicationDate}
-          genre={mockBook.genre}
-          publicationYear={mockBook.publicationYear}
-          image={mockBook.image}
-        />
-      )}
-    </div>
-  );
-};
+  const BookList = ({ searchText }) => {
+    
+    const filteredBooks = mockBooks.filter((book) => {
+      const searchFields = ['title', 'author', 'publicationHouse', 'genre'];
+      return searchFields.some(field =>
+        book[field].toLowerCase().includes(searchText.toLowerCase())
+      );
+    });
+  
+    return (
+      <div className="flex flex-wrap justify-center max-w-[80%]" style={{margin: '0 auto'}}>
+        {filteredBooks.map((mockBook, index) =>
+          <BookCard
+            key={index}
+            title={mockBook.title}
+            author={mockBook.author}
+            publicationHouse={mockBook.publicationHouse}
+            publicationDate={mockBook.publicationDate}
+            genre={mockBook.genre}
+            publicationYear={mockBook.publicationYear}
+            image={mockBook.image}
+          />
+        )}
+      </div>
+    );
+  };
+  
 
 export default BookList;
