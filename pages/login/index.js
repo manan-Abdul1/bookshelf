@@ -75,7 +75,6 @@ const SignIn = () => {
   const onSubmit = async (data) => {
     try {
       const submitForm = await axios.post('http://localhost:5500/api/auth/login', data);
-      console.log(submitForm.data.message, 'submitForm');
       
       if (submitForm.data.ok) {
         toast.success(submitForm.data.message);
