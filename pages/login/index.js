@@ -1,6 +1,6 @@
-import Search from "@/components/Search";
 import React from "react";
 import { useForm } from "react-hook-form";
+import Link from "next/link";
 import tw from "tailwind-styled-components";
 
 const Container = tw.div`
@@ -13,6 +13,7 @@ const Container = tw.div`
   rounded-md
   h-[350px]
 `;
+
 const Title = tw.h2`
   text-2xl 
   text-blue-500
@@ -23,7 +24,6 @@ const Title = tw.h2`
 
 const Form = tw.form`
   px-8 
-  pb-8 
 `;
 
 const Input = tw.input`
@@ -53,6 +53,12 @@ const Button = tw.button`
   focus:shadow-outline;
 `;
 
+const SignUpLink = tw.div`
+  text-center
+  text-black
+  mt-4
+`;
+
 const SignIn = () => {
   const {
     register,
@@ -61,7 +67,7 @@ const SignIn = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data); 
+    console.log(data);
   };
 
   return (
@@ -101,6 +107,12 @@ const SignIn = () => {
         </div>
         <Button type="submit">Sign In</Button>
       </Form>
+      <SignUpLink>
+        Don't have an account?{" "}
+        <Link className="text-blue-500 hover:underline " href="/signup">
+          Sign Up
+        </Link>
+      </SignUpLink>
     </Container>
   );
 };
