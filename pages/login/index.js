@@ -2,6 +2,9 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import tw from "tailwind-styled-components";
+import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
+import { useRouter } from 'next/router';
 
 const Container = tw.div`
   max-w-sm
@@ -33,11 +36,12 @@ const Input = tw.input`
   rounded-md 
   border 
   focus:outline-none 
-  focus:border-blue-500;
+  focus:border-blue-500
+  text-black
 `;
 
 const ErrorMessage = tw.span`
-  text-red-500;
+  text-red-500
 `;
 
 const Button = tw.button`
@@ -50,7 +54,7 @@ const Button = tw.button`
   px-4 
   rounded-md 
   focus:outline-none 
-  focus:shadow-outline;
+  focus:shadow-outline
 `;
 
 const SignUpLink = tw.div`
@@ -65,9 +69,28 @@ const SignIn = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const router = useRouter();
 
-  const onSubmit = (data) => {
-    console.log(data);
+
+  const onSubmit = async (data) => {
+    try {
+      const submitForm = await axios.post('http://localhost:5500/api/auth/login', data);
+      console.log(submitForm.data.message, 'submitForm');
+      
+      if (submitForm.data.ok) {
+        toast.success(submitForm.data.message);
+        router.push('/dashboard');
+      } else {
+        toast.error(submitForm.data.message);
+      }
+    } catch (error) {
+      if (error.response && error.response.data) {
+        const errorMessage = error.response.data.message;
+        toast.error(errorMessage);
+      } else {
+        toast.error("An error occurred while processing your request.");
+      }
+    }
   };
 
   return (
@@ -113,6 +136,7 @@ const SignIn = () => {
           Sign Up
         </Link>
       </SignUpLink>
+      <Toaster position="top-right"/>
     </Container>
   );
 };
