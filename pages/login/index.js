@@ -79,7 +79,9 @@ const SignIn = () => {
       
       if (submitForm.data.ok) {
         toast.success(submitForm.data.message);
-        router.push('/dashboard');
+        setTimeout(() => {
+          router.push('/dashboard')
+        }, 1000);
       } else {
         toast.error(submitForm.data.message);
       }
