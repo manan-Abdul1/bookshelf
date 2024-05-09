@@ -1,6 +1,10 @@
+import axios from 'axios';
+import Link from 'next/link';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import toast, { Toaster } from 'react-hot-toast';
 import tw from 'tailwind-styled-components';
+import { useRouter } from 'next/router';
 
 const Container = tw.div`
   max-w-md
@@ -23,7 +27,6 @@ const Title = tw.h2`
 const Form = tw.form`
   px-8 
   pt-6 
-  pb-8 
   mb-4
 `;
 
@@ -35,6 +38,7 @@ const Input = tw.input`
   border 
   focus:outline-none 
   focus:border-blue-500
+  text-black
 `;
 
 const Label = tw.label`
@@ -60,13 +64,39 @@ const Button = tw.button`
   focus:outline-none 
   focus:shadow-outline
 `;
+const SignInLink = tw.div`
+  text-center
+  text-black
+  my-4
+`;
 
 const SignUp = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const router = useRouter();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const submitForm = await axios.post('http://localhost:5500/api/auth/register', data);
+      console.log(submitForm.data.message, 'submitForm');
+      
+      if (submitForm.data.ok) {
+        toast.success(submitForm.data.message);
+        setTimeout(() => {
+          router.push('/')
+        }, 2000);
+      } else {
+        toast.error(submitForm.data.message);
+      }
+    } catch (error) {
+      if (error.response && error.response.data) {
+        const errorMessage = error.response.data.message;
+        toast.error(errorMessage);
+      } else {
+        toast.error("An error occurred while processing your request.");
+      }
+    }
   };
+  
 
   return (
     <Container>
@@ -114,6 +144,13 @@ const SignUp = () => {
         </div>
         <Button type="submit">Sign Up</Button>
       </Form>
+      <SignInLink>
+         Already registered?{" "}
+        <Link className="text-blue-500 hover:underline " href="/">
+          Login
+        </Link>
+      </SignInLink>
+    <Toaster position="top-right"/>
     </Container>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import SignIn from './login';
 import { useRouter } from 'next/router';
+import { Toaster } from 'react-hot-toast';
 
 
 const Home = () => {
@@ -9,6 +10,7 @@ const Home = () => {
   return (
     <>
     <SignIn/>
+    <Toaster position="top-right"/>
     </>
   );
 };
