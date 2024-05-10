@@ -13,7 +13,6 @@ const Dashboard = () => {
     <>
       <Search searchText={searchText} onSearch={handleSearch} />
       <BookList searchText={searchText} />
-      <BookForm/>
     </>
   );
 };
