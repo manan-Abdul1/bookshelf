@@ -8,9 +8,12 @@ const ProtectedRoute = ({ children }) => {
     const { isLoggedIn } = useAuth();
 
     useEffect(() => {
+        const accessToken = localStorage.getItem("accessToken");
+
         // Redirect to login page if user is not logged in
         if (
             !isLoggedIn &&
+            !accessToken &&
             router.pathname !== "/login" &&
             router.pathname !== "/signup"
         ) {

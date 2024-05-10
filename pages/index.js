@@ -1,17 +1,23 @@
-import React from 'react';
-import SignIn from './login';
-import { Toaster } from 'react-hot-toast';
-import { useAuth } from '@/context/AuthContext';
-import Dashboard from '@/components/Dashboard/Dashboard';
-
+import React, { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
+import Dashboard from "@/components/Dashboard/Dashboard";
+import { useRouter } from "next/router";
 
 const Home = () => {
-  const { isLoggedIn } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (!accessToken) {
+      router.push("/login");
+    }
+  }, []);
 
   return (
     <>
-    {isLoggedIn ? <Dashboard /> : <SignIn />}
-    <Toaster position="top-right"/>
+      <Dashboard />
+      <Toaster position="top-right" />
     </>
   );
 };

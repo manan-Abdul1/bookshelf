@@ -79,6 +79,7 @@ const SignIn = () => {
       const submitForm = await axios.post('http://localhost:5500/api/auth/login', data);
       
       if (submitForm.data.ok) {
+        localStorage.setItem('accessToken', submitForm.data.token);
         toast.success(submitForm.data.message);
         let userData = { 
           id: submitForm.data.id,
