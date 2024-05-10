@@ -87,6 +87,7 @@ const SignIn = () => {
           lastName: submitForm.data.lastName,
           email: submitForm.data.email,
         }
+        localStorage.setItem('user', JSON.stringify(userData));
         login(userData);
         setTimeout(() => {
           router.push('/')
