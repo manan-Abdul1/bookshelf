@@ -1,6 +1,6 @@
-import BookList from '@/components/BooksList/BookList';
-import Search from '@/components/Search';
 import React, { useState } from 'react';
+import Search from '../Search';
+import BookList from '../BooksList/BookList';
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState('');
@@ -13,6 +13,7 @@ const Dashboard = () => {
     <>
       <Search searchText={searchText} onSearch={handleSearch} />
       <BookList searchText={searchText} />
+      <BookForm/>
     </>
   );
 };

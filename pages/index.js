@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import SignIn from './login';
-import { useRouter } from 'next/router';
 import { Toaster } from 'react-hot-toast';
+import { useAuth } from '@/context/AuthContext';
+import Dashboard from '@/components/Dashboard/Dashboard';
 
 
 const Home = () => {
-  const router = useRouter();
+  const { isLoggedIn } = useAuth();
 
   return (
     <>
-    <SignIn/>
+    {isLoggedIn ? <Dashboard /> : <SignIn />}
     <Toaster position="top-right"/>
     </>
   );

@@ -5,6 +5,7 @@ import tw from "tailwind-styled-components";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from 'next/router';
+import { useAuth } from "@/context/AuthContext";
 
 const Container = tw.div`
   max-w-sm
@@ -70,6 +71,7 @@ const SignIn = () => {
     formState: { errors },
   } = useForm();
   const router = useRouter();
+  const { login } = useAuth();
 
 
   const onSubmit = async (data) => {
@@ -78,8 +80,15 @@ const SignIn = () => {
       
       if (submitForm.data.ok) {
         toast.success(submitForm.data.message);
+        let userData = { 
+          id: submitForm.data.id,
+          firstName: submitForm.data.firstName,
+          lastName: submitForm.data.lastName,
+          email: submitForm.data.email,
+        }
+        login(userData);
         setTimeout(() => {
-          router.push('/dashboard')
+          router.push('/')
         }, 1000);
       } else {
         toast.error(submitForm.data.message);
