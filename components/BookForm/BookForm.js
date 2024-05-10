@@ -1,6 +1,10 @@
+import { useAuth } from '@/context/AuthContext';
+import { CLOUDNIARY_IMG_URL, CREATE_NEW_BOOK } from '@/utils/serverUrl';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast, { Toaster } from 'react-hot-toast';
 import tw from 'tailwind-styled-components';
 
 const FormContainer = tw.div`
@@ -60,7 +64,6 @@ const Button = tw.button`
   rounded
   hover:bg-blue-700
 `;
-
 const Title = tw.h2`
   text-2xl 
   text-blue-500
@@ -72,11 +75,13 @@ const ErrorMessage = tw.span`
   text-red-500
 `;
 
-
-const BookForm = ({ onSubmit }) => {
+const BookForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [allGenres, setAllGenres] = useState([]);
-  
+  const { userData } = useAuth();
+  const router = useRouter();
+
+  console.log(userData,'userdata')
   useEffect(() => {
     const getAllGenres = async () => {
       try {
@@ -89,9 +94,38 @@ const BookForm = ({ onSubmit }) => {
     getAllGenres();
   }, []);
 
-  const submitForm = (data) => {
-    console.log(data,'data')
-    // onSubmit(data);
+  const submitForm = async (data) => {
+    const formData = new FormData();
+    formData.append('file', data.bookImage[0]);
+    formData.append('upload_preset', process.env.NEXT_CLOUNDINARY_SECRET);
+
+    try {
+      const uploadImageUrl = await axios.post(CLOUDNIARY_IMG_URL, formData);
+      if(uploadImageUrl){
+        const uploadData = {
+          ...data,
+          userId: userData.id,
+          imageUrl: uploadImageUrl.data.secure_url
+        }
+        const createNewBook = await axios.post(CREATE_NEW_BOOK, uploadData);
+        
+        if (createNewBook.data.ok) {
+          toast.success(createNewBook.data.message);
+          setTimeout(() => {
+            router.push('/')
+          }, 2000);
+        } else {
+          toast.error(createNewBook.data.message);
+        }
+      }
+    } catch (error) {
+      if (error.response && error.response.data) {
+        const errorMessage = error.response.data.message;
+        toast.error(errorMessage);
+      } else {
+        toast.error("An error occurred while processing your request.");
+      }
+    }
   };
 
   return (
@@ -133,8 +167,14 @@ const BookForm = ({ onSubmit }) => {
           <Input type="text" name="publicationYear" {...register("publicationYear", { required: true })} />
           {errors.publicationYear && <ErrorMessage>Publication Year is required</ErrorMessage>}
         </FormField>
+        <FormField>
+          <Label htmlFor="bookImage">Image</Label>
+          <Input type="file" name="bookImage" accept=".jpeg, .jpg, .png" {...register("bookImage", { required: true })} />
+          {errors.bookImage && <ErrorMessage>Book Image is required</ErrorMessage>}
+        </FormField>
         <Button type="submit">Submit</Button>
       </form>
+      <Toaster position="top-right"/>
     </FormContainer>
   );
 };
