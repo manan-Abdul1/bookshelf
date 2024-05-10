@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import BookCard from "../BookCard/BookCard";
 import tw from 'tailwind-styled-components';
 import { mockBooks } from "@/utils/mockData";
+import { useRouter } from "next/router";
 
 const Container = tw.div`
   flex
@@ -31,6 +32,20 @@ const CategoryBooks = tw.div`
 const SortSection = tw.div`
   w-full
   mb-4
+  flex
+  justify-between
+`;
+const Button = tw.button`
+  w-full 
+  bg-blue-500 
+  hover:bg-blue-600 
+  text-white 
+  font-bold 
+  py-2 
+  px-4 
+  rounded-md 
+  focus:outline-none 
+  focus:shadow-outline
 `;
 
 const SortLabel = tw.label`
@@ -51,6 +66,7 @@ const BookList = ({ searchText }) => {
   const [readingBooks, setReadingBooks] = useState([]);
   const [completedBooks, setCompletedBooks] = useState([]);
   const [planToReadBooks, setPlanToReadBooks] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     // Categorize books based on their status
@@ -95,6 +111,7 @@ const BookList = ({ searchText }) => {
     <Container>
       {/* Sort Dropdown */}
       <SortSection>
+        <div>
         <SortLabel htmlFor="sortCriteria">Sort by:</SortLabel>
         <SortSelect
           id="sortCriteria"
@@ -106,6 +123,10 @@ const BookList = ({ searchText }) => {
           <option value="publicationDate">Publication Date</option>
           <option value="genre">Genre</option>
         </SortSelect>
+        </div>
+        <div>
+          <Button onClick={()=>router.push('/addBook')}>Add New Book</Button>
+        </div>
       </SortSection>
 
       {/* Reading Books */}
