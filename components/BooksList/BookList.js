@@ -107,6 +107,7 @@ const BookList = ({ searchText }) => {
     return books.filter((book) => {
       const searchFields = ['title', 'author', 'publicationHouse', 'genre'];
       return searchFields.some(field =>
+        typeof book.bookId[field] === 'string' && 
         book.bookId[field].toLowerCase().includes(searchText.toLowerCase())
       );
     });
