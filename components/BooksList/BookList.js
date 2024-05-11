@@ -91,8 +91,8 @@ const BookList = ({ searchText }) => {
     // Sort categorized books based on selected criteria
     const sortCategorizedBooks = (books) => {
       return books.sort((a, b) => {
-        if (a[sortCriteria] < b[sortCriteria]) return -1;
-        if (a[sortCriteria] > b[sortCriteria]) return 1;
+        if (a.bookId[sortCriteria] < b.bookId[sortCriteria]) return -1;
+        if (a.bookId[sortCriteria] > b.bookId[sortCriteria]) return 1;
         return 0;
       });
     };
@@ -105,7 +105,7 @@ const BookList = ({ searchText }) => {
 
   const filterBooks = (books) => {
     return books.filter((book) => {
-      const searchFields = ['title', 'author', 'publicationHouse', 'genre'];
+      const searchFields = ['title', 'author', 'publicationHouse'];
       return searchFields.some(field =>
         typeof book.bookId[field] === 'string' && 
         book.bookId[field].toLowerCase().includes(searchText.toLowerCase())
@@ -127,7 +127,6 @@ const BookList = ({ searchText }) => {
           <option value="title">Title</option>
           <option value="author">Author</option>
           <option value="publicationDate">Publication Date</option>
-          <option value="genre">Genre</option>
         </SortSelect>
         </div>
         <div>
