@@ -94,10 +94,12 @@ const BookCard = ({
     publicationDate,
     genre,
     publicationYear,
-    image,
+    imageUrl,
+    _id,
+    status
 }) => {
+    console.log(status,'status')
     const [showDropdown, setShowDropdown] = useState(false);
-
     const toggleDropdown = () => {
         setShowDropdown(!showDropdown);
     };
@@ -149,7 +151,7 @@ const BookCard = ({
                     <DropdownItem className="hover:text-blue-500">Completed</DropdownItem>
                 </DropdownContent>
             )}
-            {image && <BookImage src={image} alt={title} />}
+            {imageUrl && <BookImage src={imageUrl} alt={title} />}
             <CardContent>
                 <Title>{title}</Title>
                 <Author>by {author}</Author>
@@ -164,7 +166,7 @@ const BookCard = ({
                     </DetailItem>
                     <DetailItem>
                         <DetailLabel>Genre:</DetailLabel>
-                        <DetailValue>{genre}</DetailValue>
+                        <DetailValue>{genre.name}</DetailValue>
                     </DetailItem>
                     <DetailItem>
                         <DetailLabel>Publication Year:</DetailLabel>

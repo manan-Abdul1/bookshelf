@@ -3,6 +3,7 @@ import BookCard from "../BookCard/BookCard";
 import tw from 'tailwind-styled-components';
 import { mockBooks } from "@/utils/mockData";
 import { useRouter } from "next/router";
+import { useUserBook } from "@/context/UserBookContext";
 
 const Container = tw.div`
   flex
@@ -67,21 +68,25 @@ const BookList = ({ searchText }) => {
   const [completedBooks, setCompletedBooks] = useState([]);
   const [planToReadBooks, setPlanToReadBooks] = useState([]);
   const router = useRouter();
+  const { userBooks } = useUserBook();
+
+  console.log(userBooks,'userBooks')
 
   useEffect(() => {
     // Categorize books based on their status
-    const categorizedBooks = mockBooks.reduce((acc, book) => {
+    const categorizedBooks = userBooks.reduce((acc, book) => {
       switch (book.status) {
-        case "Reading":
-          return { ...acc, reading: [...acc.reading, book] };
-        case "Completed":
-          return { ...acc, completed: [...acc.completed, book] };
-        case "Plan to Read":
-          return { ...acc, planToRead: [...acc.planToRead, book] };
-        default:
-          return acc;
+          case "Reading":
+              return { ...acc, reading: [...acc.reading, book] };
+          case "Completed":
+              return { ...acc, completed: [...acc.completed, book] };
+          case "PlanToRead":
+              return { ...acc, planToRead: [...acc.planToRead, book] };
+          default:
+              return acc;
       }
-    }, { reading: [], completed: [], planToRead: [] });
+  }, { reading: [], completed: [], planToRead: [] });
+  
 
     // Sort categorized books based on selected criteria
     const sortCategorizedBooks = (books) => {
@@ -96,13 +101,13 @@ const BookList = ({ searchText }) => {
     setReadingBooks(sortCategorizedBooks(categorizedBooks.reading));
     setCompletedBooks(sortCategorizedBooks(categorizedBooks.completed));
     setPlanToReadBooks(sortCategorizedBooks(categorizedBooks.planToRead));
-  }, [sortCriteria]);
+  }, [sortCriteria, userBooks]);
 
   const filterBooks = (books) => {
     return books.filter((book) => {
       const searchFields = ['title', 'author', 'publicationHouse', 'genre'];
       return searchFields.some(field =>
-        book[field].toLowerCase().includes(searchText.toLowerCase())
+        book.bookId[field].toLowerCase().includes(searchText.toLowerCase())
       );
     });
   };
@@ -134,7 +139,7 @@ const BookList = ({ searchText }) => {
         <CategoryTitle>Reading</CategoryTitle>
         <CategoryBooks>
           {filterBooks(readingBooks).map((book, index) => (
-            <BookCard key={index} {...book} />
+            <BookCard key={index} status={book.status} {...book.bookId} />
           ))}
         </CategoryBooks>
       </CategorySection>
@@ -144,7 +149,7 @@ const BookList = ({ searchText }) => {
         <CategoryTitle>Completed</CategoryTitle>
         <CategoryBooks>
           {filterBooks(completedBooks).map((book, index) => (
-            <BookCard key={index} {...book} />
+            <BookCard key={index} status={book.status} {...book.bookId} />
           ))}
         </CategoryBooks>
       </CategorySection>
@@ -154,7 +159,7 @@ const BookList = ({ searchText }) => {
         <CategoryTitle>Plan to Read</CategoryTitle>
         <CategoryBooks>
           {filterBooks(planToReadBooks).map((book, index) => (
-            <BookCard key={index} {...book} />
+            <BookCard key={index} status={book.status} {...book.bookId} />
           ))}
         </CategoryBooks>
       </CategorySection>

@@ -5,11 +5,13 @@ import { useRouter } from "next/router";
 import { useAuth } from "@/context/AuthContext";
 import { GET_ALL_BOOKS_BY_USER_ID } from "@/utils/serverUrl";
 import axios from "axios";
+import { useUserBook } from "@/context/UserBookContext";
 
 const Home = () => {
   const router = useRouter();
   const { userData } = useAuth();
-  const [userBooks, setUserBooks] = useState([]);
+  const { updateUserBooks } = useUserBook();
+
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
 
@@ -20,7 +22,7 @@ const Home = () => {
   const getAllBooksByUserId = async (userId) => {
     try {
       const response = await axios.get(`${GET_ALL_BOOKS_BY_USER_ID}/${userId}`);
-      setUserBooks(response.data);
+      updateUserBooks(response.data);
     } catch (error) {
       console.error("Error fetching user Books:", error);
     }
