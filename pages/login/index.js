@@ -144,8 +144,8 @@ const SignIn = () => {
         <Button type="submit">Sign In</Button>
       </Form>
       <SignUpLink>
-        Don't have an account?{" "}
-        <Link className="text-blue-500 hover:underline " href="/signup">
+        Don&apos;t have an account?{" "}
+        <Link className="text-blue-500 hover:underline" href="/signup">
           Sign Up
         </Link>
       </SignUpLink>
