@@ -16,7 +16,7 @@ const Container = tw.div`
   bg-white
   shadow-md
   rounded-md
-  h-[350px]
+  h-[380px]
 `;
 
 const Title = tw.h2`
