@@ -63,6 +63,7 @@ const SignUpLink = tw.div`
   text-center
   text-black
   mt-4
+  mb-6
 `;
 
 const SignIn = () => {
