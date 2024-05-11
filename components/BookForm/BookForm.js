@@ -1,5 +1,5 @@
 import { useAuth } from '@/context/AuthContext';
-import { CLOUDNIARY_IMG_URL, CREATE_NEW_BOOK } from '@/utils/serverUrl';
+import { CLOUDNIARY_IMG_URL, CREATE_NEW_BOOK, GET_GENRE } from '@/utils/serverUrl';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -85,7 +85,7 @@ const BookForm = () => {
   useEffect(() => {
     const getAllGenres = async () => {
       try {
-        const response = await axios.get('http://localhost:5500/api/genre');
+        const response = await axios.get(GET_GENRE);
         setAllGenres(response.data);
       } catch (error) {
         console.error('Error fetching genres:', error);

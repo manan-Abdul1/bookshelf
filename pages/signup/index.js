@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import toast, { Toaster } from 'react-hot-toast';
 import tw from 'tailwind-styled-components';
 import { useRouter } from 'next/router';
+import { AUTH_REGISTER } from '@/utils/serverUrl';
 
 const Container = tw.div`
   max-w-md
@@ -76,7 +77,7 @@ const SignUp = () => {
 
   const onSubmit = async (data) => {
     try {
-      const submitForm = await axios.post('http://localhost:5500/api/auth/register', data);
+      const submitForm = await axios.post(AUTH_REGISTER, data);
       console.log(submitForm.data.message, 'submitForm');
       
       if (submitForm.data.ok) {

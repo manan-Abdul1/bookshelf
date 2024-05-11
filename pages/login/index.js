@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from 'next/router';
 import { useAuth } from "@/context/AuthContext";
+import { AUTH_LOGIN } from "@/utils/serverUrl";
 
 const Container = tw.div`
   max-w-sm
@@ -76,7 +77,7 @@ const SignIn = () => {
 
   const onSubmit = async (data) => {
     try {
-      const submitForm = await axios.post('http://localhost:5500/api/auth/login', data);
+      const submitForm = await axios.post(AUTH_LOGIN, data);
       
       if (submitForm.data.ok) {
         localStorage.setItem('accessToken', submitForm.data.token);
