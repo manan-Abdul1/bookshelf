@@ -6,6 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { GET_ALL_BOOKS_BY_USER_ID } from "@/utils/serverUrl";
 import axios from "axios";
 import { useUserBook } from "@/context/UserBookContext";
+import Navbar from "@/components/Navbar/Navbar";
 
 const Home = () => {
   const router = useRouter();
@@ -35,6 +36,7 @@ const Home = () => {
 
   return (
     <>
+      <Navbar/>
       <Dashboard />
       <Toaster position="top-right" />
     </>

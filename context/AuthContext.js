@@ -21,6 +21,9 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         setIsLoggedIn(false);
+        setUserData([]);
+        localStorage.removeItem("user");
+        localStorage.removeItem("accessToken");
     };
     console.log(userData, "userData");
 
