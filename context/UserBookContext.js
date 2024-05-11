@@ -12,12 +12,14 @@ export const UserBookProvider = ({ children }) => {
   };
 
   const updateBookStatus = (bookId, newStatus) => {
+
     const updatedBooks = userBooks.map((book) => {
-      if (book._id === bookId) {
+      if (book.bookId._id === bookId) {
         return { ...book, status: newStatus };
       }
       return book;
     });
+
     setUserBooks(updatedBooks);
   };
 

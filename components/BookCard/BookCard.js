@@ -1,4 +1,9 @@
+import { useAuth } from "@/context/AuthContext";
+import { useUserBook } from "@/context/UserBookContext";
+import { UPDATE_USER_BOOK_STATUS } from "@/utils/serverUrl";
+import axios from "axios";
 import React, { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import tw from "tailwind-styled-components";
 
 const CardContainer = tw.div`
@@ -96,14 +101,32 @@ const BookCard = ({
     publicationYear,
     imageUrl,
     _id,
-    status
+    status,
 }) => {
-    console.log(status,'status')
+    const { updateBookStatus } = useUserBook();
+    const { userData } = useAuth();
+
     const [showDropdown, setShowDropdown] = useState(false);
     const toggleDropdown = () => {
         setShowDropdown(!showDropdown);
     };
-
+    const handleStatusChange = async (bookId, status) => {
+        try {
+            const response = await axios.put(UPDATE_USER_BOOK_STATUS, {
+                bookId,
+                status,
+                userId: userData.id,
+            });
+            console.log(response,'response')
+            if (response.data.ok) {
+                updateBookStatus(bookId, status);
+            } else {
+                toast.error(response.data.message);
+            }
+        } catch (error) {
+            console.error("Error Updating status:", error);
+        }
+    };
     return (
         <CardContainer>
             <DropdownIcon
@@ -144,11 +167,24 @@ const BookCard = ({
             </DropdownIcon>
             {showDropdown && (
                 <DropdownContent>
-                    <DropdownItem className="hover:text-blue-500 ">
+                    <DropdownItem
+                        className="hover:text-blue-500"
+                        onClick={() => handleStatusChange(_id, "PlanToRead")}
+                    >
                         Plan to Read
                     </DropdownItem>
-                    <DropdownItem className="hover:text-blue-500">Reading</DropdownItem>
-                    <DropdownItem className="hover:text-blue-500">Completed</DropdownItem>
+                    <DropdownItem
+                        className="hover:text-blue-500"
+                        onClick={() => handleStatusChange(_id, "Reading")}
+                    >
+                        Reading
+                    </DropdownItem>
+                    <DropdownItem
+                        className="hover:text-blue-500"
+                        onClick={() => handleStatusChange(_id, "Completed")}
+                    >
+                        Completed
+                    </DropdownItem>
                 </DropdownContent>
             )}
             {imageUrl && <BookImage src={imageUrl} alt={title} />}
@@ -174,6 +210,7 @@ const BookCard = ({
                     </DetailItem>
                 </DetailsContainer>
             </CardContent>
+            <Toaster position="top-right" />
         </CardContainer>
     );
 };
